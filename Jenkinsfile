@@ -36,6 +36,7 @@ pipeline {
         stage('Deploy to GKE') {
             steps {
                 sh '''
+                   export USE_GKE_GCLOUD_AUTH_PLUGIN=True
                     gcloud container clusters get-credentials ${CLUSTER} --region ${REGION} --project ${PROJECT_ID}
                     sed "s|PLACEHOLDER|${IMAGE}|g" k8s/deployment.yaml > k8s/deployment-final.yaml
                     kubectl apply -f k8s/deployment-final.yaml
